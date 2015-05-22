@@ -12,7 +12,7 @@ void ofApp::setup(){
 	gui.add(k.setup("K", segmentation.k, 0, 500));
 	gui.add(min_size.setup("MIN SIZE", segmentation.min, 0, 50));
 	
-//	videoInput.initGrabber(320,240);
+	videoInput.initGrabber(320,240);
     
     ofDirectory dir;
     int nImages = dir.listDir("japan");
@@ -22,6 +22,7 @@ void ofApp::setup(){
         images.push_back(img);
     }
     imagesI = 0;
+    video = true;
     
 }
 
@@ -31,13 +32,22 @@ void ofApp::update(){
 	segmentation.sigma = sigma;
 	segmentation.k = k;
 	segmentation.min = min_size;
-
-//	videoInput.update();
-//	if(videoInput.isFrameNew()){
+    
+    if (video) {
+        videoInput.update();
+        if(videoInput.isFrameNew()){
+            segmentation.segment(videoInput.getPixelsRef());
+            segmentedImage.setFromPixels(segmentation.getSegmentedPixels());
+            segmentedImage.update();
+            videoFrame = videoInput.getPixelsRef();
+            videoFrame.update();
+        }
+    }
+    else {
 		segmentation.segment(images[imagesI].getPixelsRef());
 		segmentedImage.setFromPixels(segmentation.getSegmentedPixels());
 		segmentedImage.update();
-//	}
+    }
 }
 
 //-------------------------------------------------------------- draw();
@@ -50,21 +60,23 @@ void ofApp::draw(){
         image.setFromPixels(segmentation.getSegmentMask(0));
         image.update();
         
-        
-        sampler.setup(&images[imagesI], &image, 20, 30);
-        
-        ofColor colour = getImageColour(&images[imagesI], &image);
-        ofSetColor(colour);
-        ofRect(160, 240, 160, 120);
+        ofColor colour;
+        if (video) {
+            //videoFrame.draw(0, 0);
+            sampler.setup(&videoFrame, &image, 20, 30);
+        }
+        else {
+            sampler.setup(&images[imagesI], &image, 20, 30);
+        }
         ofSetColor(255);
         
         sampler.draw(100, 100, 800);
         
-//		for(int i = 0; i < segmentation.numSegments; i++){
-//			image.setFromPixels(segmentation.getSegmentMask(i));
-//			image.update();
-//			image.draw((i+1)*160,240,160,120);
-//		}
+		for(int i = 0; i < segmentation.numSegments; i++){
+			image.setFromPixels(segmentation.getSegmentMask(i));
+			image.update();
+			image.draw(i*160,620,160,120);
+		}
 	}
 
 	gui.draw();

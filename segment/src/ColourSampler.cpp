@@ -39,7 +39,7 @@ void ColourSampler::draw(int x, int y, int w, int h) {
         width = imgW;
         height = imgH;
     }
-    image->draw(0,0);
+    //image->draw(0,0);
     for(int i = 0; i < cellColours.size(); i++)
     {
         //ofSetColor(cellColours[i], 230);

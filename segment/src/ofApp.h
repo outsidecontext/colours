@@ -28,6 +28,8 @@ class ofApp : public ofBaseApp{
     
     ColourSampler sampler;
     
+    bool video;
+    ofImage videoFrame;
     vector<ofImage> images;
     int imagesI;
 
