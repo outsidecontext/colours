@@ -8,66 +8,72 @@ void ofApp::setup(){
     gui.setPosition(700, 0);
     
     ofEnableAlphaBlending();
-    image.loadImage("test.jpg");
+    rowCount = 4;
+    colCount = 6;
+    
+    ofDirectory dir;
+    int nImages = dir.listDir("japan");
+    for(int i=0; i<nImages; i++){
+        ofImage img;
+        img.loadImage(dir.getPath(i));
+        images.push_back(img);
+    }
+    ofLog() << nImages;
+    
+    for (int i=0; i<nImages; i++) {
+        ColourSampler sampler;
+        sampler.setup(&images[i], rowCount, colCount);
+        samplers.push_back(sampler);
+    }
 }
 
 
 void ofApp::update(){
-    // gui
-    colCount = colCountSlider;
-    rowCount = rowCountSlider;
-    // cells
-    cellColours.clear();
-    cells.clear();
-    int imgW = image.getWidth();
-    int imgH = image.getHeight();
-    int cellW = imgW / colCount;
-    int cellH = imgH / rowCount;
-    for (int row=0; row<rowCount; row++) {
-        for (int col=0; col<colCount; col++) {
-            ofRectangle cell;
-            cell.set(col*cellW, row*cellH, cellW, cellH);
-            ofColor colour = getCellColour(cell);
-            cellColours.push_back(colour);
-            cells.push_back(cell);
-        }
-    }
 }
 
-
-ofColor ofApp::getCellColour(ofRectangle cell) {
-    int r, g, b;
-    r = g = b = 0;
-    ofColor c;
-    for (int y=cell.y; y<cell.getBottom(); y++) {
-        for (int x=cell.x; x<cell.getRight(); x++) {
-            c = image.getColor(x, y);
-            r += c.r;
-            g += c.g;
-            b += c.b;
-        }
-    }
-    int n = cell.height * cell.width;
-    return ofColor(r/n, g/n, b/n);
-}
 
 
 void ofApp::draw(){
-    ofPushMatrix();
-    ofScale(0.5, 0.5);
-    image.draw(0,0);
-    for(int i = 0; i < cellColours.size(); i++)
-    {
-        ofSetColor(cellColours[i], 250);
-        ofRect(cells[i]);
+//    sampler.draw(0, 0, 1000);
+    float w = ofGetWidth() / 12;
+    float x = 0;
+    float y = 0;
+    for (int i=0; i<samplers.size(); i++) {
+        if (x > ofGetWidth() - w) {
+            x = 0;
+            y += samplers[i-1].height;
+        }
+        samplers[i].draw(x, y, w);
+        x += samplers[i].width;
     }
-    ofSetColor(255);
-    ofPopMatrix();
-    gui.draw();
+    
+//    gui.draw();
 }
 
 
 void ofApp::keyPressed(int key){
+    switch (key) {
+            case 'f':
+            ofToggleFullscreen();
+            break;
+            case OF_KEY_UP:
+            rowCount++;
+            break;
+            case OF_KEY_DOWN:
+            rowCount--;
+            break;
+            case OF_KEY_LEFT:
+            colCount--;
+            break;
+            case OF_KEY_RIGHT:
+            colCount++;
+            break;
+        default:
+            break;
+    }
+    for (int i=0; i<samplers.size(); i++) {
+        samplers[i].setGrid(rowCount, colCount);
+    }
 
 }
 

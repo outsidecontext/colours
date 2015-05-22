@@ -2,13 +2,13 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ColourSampler.h"
 
 class ofApp : public ofBaseApp{
     
 public:
     void setup();
     void update();
-    ofColor getCellColour(ofRectangle cell);
     void draw();
     
     void keyPressed(int key);
@@ -21,14 +21,14 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    ofImage image;
-    int rowCount;
-    int colCount;
-    vector<ofRectangle> cells;
-    vector<ofColor> cellColours;
-    
     ofxPanel gui;
     ofxIntSlider colCountSlider;
     ofxIntSlider rowCountSlider;
+    int rowCount;
+    int colCount;
+    
+//    ofImage image;
+    vector<ColourSampler> samplers;
+    vector<ofImage> images;
     
 };
