@@ -2,10 +2,8 @@
 
 //-------------------------------------------------------------- setup();
 void ofApp::setup(){
-
-    ofSetVerticalSync(true);
-	ofSetCircleResolution(80);
-	ofBackground(54, 54, 54);
+    
+	ofBackground(255);
 
 	gui.setup("SEGMENTATION PARAMETERS");
 	gui.add(sigma.setup("SIGMA", segmentation.sigma, 0, 2.0));
@@ -22,7 +20,7 @@ void ofApp::setup(){
         images.push_back(img);
     }
     imagesI = 0;
-    video = true;
+//    video = true;
     
 }
 

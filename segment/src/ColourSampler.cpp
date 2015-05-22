@@ -96,19 +96,19 @@ ofColor ColourSampler::getCellColour(ofRectangle cell) {
     for (int y=cell.y; y<cell.getBottom(); y++) {
         for (int x=cell.x; x<cell.getRight(); x++) {
             c = image->getColor(x, y);
-            if (c.getBrightness() > 0 && c.getSaturation() > 0) {
+            //if (c.getBrightness() > 0 && c.getSaturation() > 0) {
                 r += c.r;
                 g += c.g;
                 b += c.b;
                 a += mask->getColor(x, y).r;
                 n++;
-            }
+            //}
         }
     }
     if (a/n > 80) a = 255;
     else a = 0;
-    if (n>0) return ofColor(r/n, g/n, b/n, a);
-    else return ofColor(0);
+    return ofColor(r/n, g/n, b/n, a);
+//    else return ofColor(0);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
