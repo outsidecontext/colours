@@ -8,8 +8,8 @@ void ofApp::setup(){
     gui.setPosition(700, 0);
     
     ofEnableAlphaBlending();
-    rowCount = 4;
-    colCount = 6;
+    rowCount = 2;
+    colCount = 3;
     
     ofDirectory dir;
     int nImages = dir.listDir("japan");

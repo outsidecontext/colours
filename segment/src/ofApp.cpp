@@ -22,6 +22,7 @@ void ofApp::setup(){
         images.push_back(img);
     }
     imagesI = 0;
+    
 }
 
 //-------------------------------------------------------------- update();
@@ -41,23 +42,29 @@ void ofApp::update(){
 
 //-------------------------------------------------------------- draw();
 void ofApp::draw(){
-	images[imagesI].draw(0,0);
+	//images[imagesI].draw(0,0);
 	if(segmentedImage.isAllocated()){
-		segmentedImage.draw(images[imagesI].getWidth(),0);
+		//segmentedImage.draw(images[imagesI].getWidth(),0);
 		//draw all the little masks below
 		ofImage image;
         image.setFromPixels(segmentation.getSegmentMask(0));
         image.update();
+        
+        
+        sampler.setup(&images[imagesI], &image, 20, 30);
+        
         ofColor colour = getImageColour(&images[imagesI], &image);
         ofSetColor(colour);
         ofRect(160, 240, 160, 120);
         ofSetColor(255);
         
-		for(int i = 0; i < segmentation.numSegments; i++){
-			image.setFromPixels(segmentation.getSegmentMask(i));
-			image.update();
-			image.draw((i+1)*160,240,160,120);
-		}
+        sampler.draw(100, 100, 800);
+        
+//		for(int i = 0; i < segmentation.numSegments; i++){
+//			image.setFromPixels(segmentation.getSegmentMask(i));
+//			image.update();
+//			image.draw((i+1)*160,240,160,120);
+//		}
 	}
 
 	gui.draw();

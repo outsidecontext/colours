@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ColourSampler.h"
 #include "ofxImageSegmentation.h"
 
 class ofApp : public ofBaseApp{
@@ -24,6 +25,8 @@ class ofApp : public ofBaseApp{
 	ofxSlider<float> sigma;
 	ofxSlider<float> k;
 	ofxSlider<int> min_size;
+    
+    ColourSampler sampler;
     
     vector<ofImage> images;
     int imagesI;
