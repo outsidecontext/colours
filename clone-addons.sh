@@ -19,7 +19,7 @@ else
 fi
 
 # git clone specific revision of the addons
-${CLONE}jmarsico/ofxImageSampler
+${CLONE}obviousjim/ofxImageSegmentation
 # cd ofxUI
 # git checkout 1f524f2c41c73113c7529703e6f3274fdcc19956
 # cd ..
